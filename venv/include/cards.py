@@ -4,10 +4,10 @@ import random
 pygame.init()
 pygame.display.set_mode((0, 0))
 
-background_image = pygame.image.load('images/bk_fn.jpg').convert()
+background_image = pygame.image.load('images/bk_fight.png').convert()
 
 
-class Card():
+class Card:
     def __init__(self, name, hpM, damageM, hpY, damageY, path):
         """Constructor"""
         self.name = name
