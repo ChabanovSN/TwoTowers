@@ -21,11 +21,19 @@ background_image = pygame.transform.scale(background_image, (800, 600))
 start = option = ext = None
 
 
-def DrawText(text, font, surface_menu, x, y,fnColor):
+def DrawText(text, font, surface_menu, x, y, fnColor):
     textobj = font.render(text, 1, fnColor)
     textrect = textobj.get_rect()
     textrect.topleft = (x, y)
     return surface_menu.blit(textobj, textrect)
+
+
+width, _ = font.size('Старт')
+
+
+def midlText(text):
+    width, _ = font.size(text)
+    return (surface_width / 2 - width / 2)
 
 
 if __name__ == "__main__":
@@ -33,22 +41,24 @@ if __name__ == "__main__":
     while True:
         surface_menu.blit(background_image, (0, 0))
         if moveS == 0:
-            start = DrawText('Старт', font, surface_menu, (surface_width / 2) - 65, (surface_height / 2) - 110,font_color)
+            start = DrawText('Старт', font, surface_menu, midlText('Старт'), (surface_height / 2) - 110, font_color)
         else:
-            start = DrawText('Старт', fontBig, surface_menu, (surface_width / 2) - 65, (surface_height / 2) - 110,font_big_color)
+            start = DrawText('Старт', fontBig, surface_menu, midlText('Старт'), (surface_height / 2) - 140,
+                             font_big_color)
         if moveO == 0:
-            option = DrawText('Опции', font, surface_menu, (surface_width / 2) - 65, (surface_height / 2) - 40,font_color)
+            option = DrawText('Опции', font, surface_menu, midlText('Опции'), (surface_height / 2) - 40, font_color)
         else:
-            option = DrawText('Опции', fontBig, surface_menu, (surface_width / 2) - 65, (surface_height / 2) - 40,font_big_color)
+            option = DrawText('Опции', fontBig, surface_menu, midlText('Опции'), (surface_height / 2) - 40,
+                              font_big_color)
         if moveE == 0:
-            ext = DrawText('Выход', font, surface_menu, (surface_width / 2) - 65, (surface_height / 2) + 30,font_color)
+            ext = DrawText('Выход', font, surface_menu, midlText('Выход'), (surface_height / 2) + 30, font_color)
         else:
-            ext = DrawText('Выход', fontBig, surface_menu, (surface_width / 2) - 65, (surface_height / 2) + 30,font_big_color)
+            ext = DrawText('Выход', fontBig, surface_menu, midlText('Выход'), (surface_height / 2) + 50, font_big_color)
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
-                  sys.exit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if ext.collidepoint(pos):
                     sys.exit()
