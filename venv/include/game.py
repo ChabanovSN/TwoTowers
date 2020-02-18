@@ -46,11 +46,14 @@ def display_message(user, comp):
     myfont = pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 72)
    # myfont = pygame.font.SysFont("Arial", 80)
     if user > comp:
-       return  myfont.render("Вы победили!!!", 0, (0, 0, 0))
+       width, _ = myfont.size("Вы победили!!!")
+       return  myfont.render("Вы победили!!!", 0, (0, 0, 0)),width
     elif user < comp:
-       return  myfont.render("Противник победил!!!", 0, (0, 0, 0))
+       width, _ = myfont.size("Противник победил!!!")
+       return  myfont.render("Противник победил!!!", 0, (0, 0, 0)),width
     else:
-        return myfont.render("Нечья!!!", 0, (0, 0, 0))
+        width, _ = myfont.size("Нечья!!!")
+        return myfont.render("Нечья!!!", 0, (0, 0, 0)),width
 
 
 
@@ -90,19 +93,20 @@ def mainloop():
     screen.blit(background_image, (0, 100))
     # com's tower
     surf1C = pygame.Surface((50, maxheight))
-    surf1C.fill((0, 250, 0))
 
-    surf2C = pygame.Surface((50, heightC))
+
+    surf2C = pygame.Surface((50, maxheight -heightC))
+    surf2C.fill((20, 250, 50))
     rect1C = pygame.Rect((20, 218, 50, maxheight))
-    rect2C = pygame.Rect((20, 218, 50, maxheight))
+    rect2C = pygame.Rect((20, 218, 50,  maxheight))
 
     screen.blit(surf1C, rect1C)
     screen.blit(surf2C, rect2C)
     # users's tower
     surf1U = pygame.Surface((50, maxheight))
-    surf2U = pygame.Surface((50, heightU))
-    surf1U.fill((0, 255, 0))
-    surf2U.fill((255, 0, 0))
+    surf2U = pygame.Surface((50,maxheight - heightU))
+    surf1U.fill((250, 0, 0))
+    surf2U.fill((0, 250, 0))
     rect1U = pygame.Rect((720, 218, 50, maxheight))
     rect2U = pygame.Rect((720, 218, 50, maxheight))
 
@@ -132,7 +136,8 @@ def mainloop():
         u4, cardu4 = fourCards(453, 503)
 
     if endGame:
-        screen.blit(display_message(heightU, heightC), (surface_width/4, 100))
+        letter,wightText =display_message(heightU, heightC)
+        screen.blit(letter, (surface_width/2 - wightText/2, 100))
     #pygame.display.flip()
     for event in pygame.event.get():
           if event.type == pygame.QUIT:
