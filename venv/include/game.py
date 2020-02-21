@@ -68,6 +68,7 @@ def hp_damG(card, height_u, height_c,endGame):
     else:
         height_c = 0
         endGame =1
+        display_message(height_u, height_c)
           #screen.blit(display_message(height_u, height_c), (20, 100))
     if height_u + card.hpM < maxheight:
         height_u += card.hpM
@@ -79,7 +80,7 @@ def hp_damG(card, height_u, height_c,endGame):
     else:
         height_u = 0
         endGame = 1
-
+        display_message(height_u, height_c)
         #screen.blit(display_message(height_u, height_c), (20, 100))
 
     return height_c, height_u,endGame
