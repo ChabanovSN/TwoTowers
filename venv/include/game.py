@@ -2,11 +2,12 @@ import pygame
 import cards
 import random
 import sys
+import config as cf
 
 pygame.init()
-surface_width = 800
-surface_height = 600
-screen = pygame.display.set_mode((surface_width, surface_height ))
+surface_width = cf.surface_width
+surface_height = cf.surface_height
+screen = pygame.display.set_mode((surface_width, surface_height))
 screen.fill((55, 105, 0))
 pygame.display.set_caption("Две башни")
 
@@ -14,26 +15,24 @@ clock = pygame.time.Clock()
 clock.tick(60)
 
 background_image = cards.background_image
-background_image = pygame.transform.scale(background_image, (surface_width, surface_height-200))
-
 
 
 cards_deck = cards.cards_deck
 Empty = cards.empty_card
 
-sizeCardW = 50
-sizeCarH = 80
-maxheight = 150
-heightC = 150
-heightU = 150
-runnig = 1
-
-c1 = c2 = c3 = c4 = u1 = u2 = u3 = u4 = None
-cardc1 = cardc2 = cardc3 = cardc4 = cardu1 = cardu2 = cardu3 = cardu4 = None
+sizeCardW = cf.sizeCardW
+sizeCarH = cf.sizeCarH
+maxheight = cf.maxheight
+heightC = cf.heightC
+heightU = cf.heightU
 
 
+endGame = 0
 
-def fourCards(x, y):
+
+
+#отрисовка карты
+def fourCards(x , y):
     if len(cards_deck) == 0:
         return screen.blit(pygame.transform.scale(Empty.pyObj, (sizeCardW, sizeCarH)), (x, y)), Empty
     card = random.choice(cards_deck)
@@ -41,7 +40,7 @@ def fourCards(x, y):
         cards_deck.remove(card)
         return screen.blit(pygame.transform.scale(card.pyObj, (sizeCardW, sizeCarH)), (x, y)), card
 
-
+# сообщение о победе
 def display_message(user, comp):
     myfont = pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 72)
    # myfont = pygame.font.SysFont("Arial", 80)
@@ -56,39 +55,78 @@ def display_message(user, comp):
         return myfont.render("Нечья!!!", 0, (0, 0, 0)),width
 
 
-
-def hp_damG(card, height_u, height_c,endGame):
+# урон и ХП
+def hp_damG(card):
+    global heightC, heightU, endGame
     # print(card.hpM,card.hpY,card.damageM,card.damageY)
-    if height_c + card.hpY < maxheight:
-        height_c += card.hpY
+    if heightC + card.hpY < maxheight:
+        heightC+= card.hpY
     elif card.hpY > 0:
-        height_c = maxheight
-    if height_c + card.damageY > 0:
-        height_c += card.damageY
+        heightC = maxheight
+    if heightC + card.damageY > 0:
+        heightC += card.damageY
     else:
-        height_c = 0
+        heightC = 0
         endGame =1
-        display_message(height_u, height_c)
+        display_message(heightU, heightC)
           #screen.blit(display_message(height_u, height_c), (20, 100))
-    if height_u + card.hpM < maxheight:
-        height_u += card.hpM
+    if heightU + card.hpM < maxheight:
+        heightU += card.hpM
     elif card.hpM > 0:
-        height_u = maxheight
+        heightU = maxheight
 
-    if height_u + card.damageM > 0:
-        height_u += card.damageM
+    if heightU + card.damageM > 0:
+        heightU += card.damageM
     else:
-        height_u = 0
+        heightU = 0
         endGame = 1
-        display_message(height_u, height_c)
+        display_message(heightU, heightC)
         #screen.blit(display_message(height_u, height_c), (20, 100))
+#заполнение при запуске игры
+def firstInit():
+    ## init comp cart first
+    cartScreen, cartClass = fourCards(cf.cartPos1X, cf.cartPosCompY)
+    cartCom1 = WorkCards(cartScreen, cartClass, cf.cartPos1X)
+    cartScreen, cartClass = fourCards(cf.cartPos2X, cf.cartPosCompY)
+    cartCom2 = WorkCards(cartScreen, cartClass, cf.cartPos2X)
+    cartScreen, cartClass = fourCards(cf.cartPos3X, cf.cartPosCompY)
+    cartCom3 = WorkCards(cartScreen, cartClass, cf.cartPos3X)
+    cartScreen, cartClass = fourCards(cf.cartPos4X, cf.cartPosCompY)
+    cartCom4 = WorkCards(cartScreen, cartClass, cf.cartPos4X)
+    workCardListComp = [cartCom1, cartCom2, cartCom3, cartCom4]
+    ## init user cart first
+    cartScreen, cartClass = fourCards(cf.cartPos1X, cf.cartPosUserY)
+    cartCom1 = WorkCards(cartScreen, cartClass, cf.cartPos1X)
+    cartScreen, cartClass = fourCards(cf.cartPos2X, cf.cartPosUserY)
+    cartCom2 = WorkCards(cartScreen, cartClass, cf.cartPos2X)
+    cartScreen, cartClass = fourCards(cf.cartPos3X, cf.cartPosUserY)
+    cartCom3 = WorkCards(cartScreen, cartClass, cf.cartPos3X)
+    cartScreen, cartClass = fourCards(cf.cartPos4X, cf.cartPosUserY)
+    cartCom4 = WorkCards(cartScreen, cartClass, cf.cartPos4X)
+    workCardListUser = [cartCom1, cartCom2, cartCom3, cartCom4]
+    return workCardListComp,workCardListUser
+#генерация новой карты
+def newCart(listCart, posY,pos):
+    for i in range(len(listCart)):
+        if listCart[i].objScreenCart.collidepoint(pos):
+            hp_damG(listCart[i].cart)
+            posX = listCart[i].posX
+            cartScreen, cartClass = fourCards(posX, posY)
+            listCart[i] = WorkCards(cartScreen, cartClass, posX)
+            # print(workCardListComp[i].cart.name, i)
 
-    return height_c, height_u,endGame
+# для контроля положения и состояния (временный класс, может идея будет по лучше)
+class WorkCards:
+    def __init__(self, objScreenCart, cart, posX):
+        self.objScreenCart = objScreenCart
+        self.cart = cart
+        self.posX = posX
 
+#главный циклы игры
 def mainloop():
- global  heightC, heightU, c1, c2, c3, c4, u1, u2,\
-     u3, cardc1, cardc2, cardc3, cardc4, cardu1, cardu3, cardu2, cardu4, u4
- endGame = 0
+ global  heightC, heightU
+ global endGame
+ workCardListComp, workCardListUser = firstInit()
  while True:
 
     screen.blit(background_image, (0, 100))
@@ -116,25 +154,9 @@ def mainloop():
     # comp's cards
 
     pygame.draw.rect(screen, (0, 0, 0), (300, 8, 205, 85), 3)
-    if c1 == None:
-        c1, cardc1 = fourCards(300, 11)
-    if c2 == None:
-        c2, cardc2 = fourCards(351, 11)
-    if c3 == None:
-        c3, cardc3 = fourCards(402, 11)
-    if c4 == None:
-        c4, cardc4 = fourCards(453, 11)
-
     # my cards
     pygame.draw.rect(screen, (255, 0, 0), (300, 500, 205, 85), 3)
-    if u1 == None:
-        u1, cardu1 = fourCards(300, 503)
-    if u2 == None:
-        u2, cardu2 = fourCards(351, 503)
-    if u3 == None:
-        u3, cardu3 = fourCards(402, 503)
-    if u4 == None:
-        u4, cardu4 = fourCards(453, 503)
+
 
     if endGame:
         letter,wightText =display_message(heightU, heightC)
@@ -147,34 +169,23 @@ def mainloop():
           if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ## if mouse is pressed get position of cursor ##
             pos = pygame.mouse.get_pos()
-            ## check if cursor is on button ##
-            if c1.collidepoint(pos):
-                heightC, heightU,endGame = hp_damG(cardc1, heightU, heightC,endGame)
-                c1, cardc1 = fourCards(300, 11)
-            if c2.collidepoint(pos):
-                heightC, heightU,endGame = hp_damG(cardc2, heightU, heightC,endGame)
-                c2, cardc2 = fourCards(351, 11)
-            if c3.collidepoint(pos):
-                heightC, heightU,endGame = hp_damG(cardc3, heightU, heightC,endGame)
-                c3, cardc3 = fourCards(402, 11)
-            if c4.collidepoint(pos):
-                heightC, heightU,endGame = hp_damG(cardc4, heightU, heightC,endGame)
-                c4, cardc4 = fourCards(453, 11)
-            if u1.collidepoint(pos):
-                heightC, heightU,endGame = hp_damG(cardu1, heightU, heightC,endGame)
-                u1, cardu1 = fourCards(300, 503)
-            if u2.collidepoint(pos):
-                heightC, heightU,endGame = hp_damG(cardu2, heightU, heightC,endGame)
-                u2, cardu2 = fourCards(351, 503)
-            if u3.collidepoint(pos):
-                heightC, heightU,endGame = hp_damG(cardu3, heightU, heightC,endGame)
-                u3, cardu3 = fourCards(402, 503)
-            if u4.collidepoint(pos):
-                heightC, heightU, endGame = hp_damG(cardu4, heightU, heightC,endGame)
-                u4, cardu4 = fourCards(452, 503)
-            if cardc1 == Empty and cardc2 == Empty and cardc3 == Empty and cardc4 == Empty and \
-                    cardu1 == Empty and cardu2 == Empty and cardu3 == Empty and cardu4 == Empty:
-                    endGame =1
+
+            newCart(workCardListComp, cf.cartPosCompY, pos)
+            newCart(workCardListUser, cf.cartPosUserY, pos)
+
+            if len(cards_deck) == 0:
+                allEmpty = 0
+                for c in workCardListComp:
+                    if c.cart == Empty:
+                        allEmpty +=1
+                for c in workCardListUser:
+                    if c.cart == Empty:
+                        allEmpty +=1
+                #print(allEmpty, " All empty")
+                if allEmpty == 8: # all list empty
+                    endGame = 1
+
+
 
     #pygame.display.update()
     pygame.display.flip()
