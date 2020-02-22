@@ -2,21 +2,22 @@
 import pygame
 import game
 import sys
+import config as cf
 
 pygame.font.init()
 
-font_color = (255, 255, 153)
-font_big_color = (153, 102, 255)
-font = pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 72)
-fontBig = pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 85)
-surface_width = 800
-surface_height = 600
+font_color = cf.font_color
+font_big_color = cf.font_big_color
+font = cf.font
+fontBig = cf.fontBig
 
-surface_menu = pygame.display.set_mode([surface_width, surface_height])
+surface_width = cf.surface_width
+surface_height = cf.surface_height
+
+surface_menu = cf.surface
 
 pygame.display.set_caption("Две Башни")
-background_image = pygame.image.load('images/menu_bk.jpg').convert()
-background_image = pygame.transform.scale(background_image, (800, 600))
+background_image = cf.background_menu
 
 start = option = ext = None
 

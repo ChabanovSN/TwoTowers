@@ -1,14 +1,11 @@
 import pygame
 import random
-import config as cf
+
 
 pygame.init()
 pygame.display.set_mode((0, 0))
 
-surface_width = cf.surface_width
-surface_height = cf.surface_height
-background_image = pygame.image.load('images/bk_fight.png').convert()
-background_image = pygame.transform.scale(background_image, (surface_width, surface_height-200))
+
 
 class Card:
     def __init__(self, name, hpM, damageM, hpY, damageY, path):

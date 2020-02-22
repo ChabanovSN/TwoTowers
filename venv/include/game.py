@@ -7,14 +7,14 @@ import config as cf
 pygame.init()
 surface_width = cf.surface_width
 surface_height = cf.surface_height
-screen = pygame.display.set_mode((surface_width, surface_height))
+screen = cf.surface
 screen.fill((55, 105, 0))
 pygame.display.set_caption("Две башни")
 
 clock = pygame.time.Clock()
 clock.tick(60)
 
-background_image = cards.background_image
+background_image = cf.background_game
 
 
 cards_deck = cards.cards_deck
