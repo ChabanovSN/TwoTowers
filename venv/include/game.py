@@ -152,10 +152,9 @@ def mainloop():
     screen.blit(surf1U, rect1U)
     screen.blit(surf2U, rect2U)
     # comp's cards
-
-    pygame.draw.rect(screen, (0, 0, 0), (300, 8, 205, 85), 3)
+    compRect = pygame.draw.rect(screen, (0, 0, 0), (300, 8, 205, 85), 3) # рамка для карт компа
     # my cards
-    pygame.draw.rect(screen, (255, 0, 0), (300, 500, 205, 85), 3)
+    userRect = pygame.draw.rect(screen, (255, 0, 0), (300, 500, 205, 85), 3) # рамка для карт игрока
 
 
     if endGame:
@@ -169,9 +168,10 @@ def mainloop():
           if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ## if mouse is pressed get position of cursor ##
             pos = pygame.mouse.get_pos()
-
-            newCart(workCardListComp, cf.cartPosCompY, pos)
-            newCart(workCardListUser, cf.cartPosUserY, pos)
+            if compRect.collidepoint(pos):
+              newCart(workCardListComp, cf.cartPosCompY, pos)
+            if userRect.collidepoint(pos):
+              newCart(workCardListUser, cf.cartPosUserY, pos)
 
             if len(cards_deck) == 0:
                 allEmpty = 0
