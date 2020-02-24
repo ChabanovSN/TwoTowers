@@ -3,6 +3,8 @@ import cards
 import random
 import sys
 import config as cf
+import logic as lg
+import time
 
 pygame.init()
 surface_width = cf.surface_width
@@ -26,7 +28,9 @@ maxheight = cf.maxheight
 heightC = cf.heightC
 heightU = cf.heightU
 
-
+#logic
+chooseRightCart = lg.chooseRightCart
+#endlogic
 endGame = 0
 
 
@@ -42,8 +46,7 @@ def fourCards(x , y):
 
 # сообщение о победе
 def display_message(user, comp):
-    myfont = pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 72)
-   # myfont = pygame.font.SysFont("Arial", 80)
+    myfont = cf.font
     if user > comp:
        width, _ = myfont.size("Вы победили!!!")
        return  myfont.render("Вы победили!!!", 0, (0, 0, 0)),width
@@ -51,14 +54,14 @@ def display_message(user, comp):
        width, _ = myfont.size("Противник победил!!!")
        return  myfont.render("Противник победил!!!", 0, (0, 0, 0)),width
     else:
-        width, _ = myfont.size("Нечья!!!")
-        return myfont.render("Нечья!!!", 0, (0, 0, 0)),width
+        width, _ = myfont.size("Ничья!!!")
+        return myfont.render("Ничья!!!", 0, (0, 0, 0)),width
 
 
 # урон и ХП
 def hp_damG(card):
     global heightC, heightU, endGame
-    # print(card.hpM,card.hpY,card.damageM,card.damageY)
+
     if heightC + card.hpY < maxheight:
         heightC+= card.hpY
     elif card.hpY > 0:
@@ -69,7 +72,7 @@ def hp_damG(card):
         heightC = 0
         endGame =1
         display_message(heightU, heightC)
-          #screen.blit(display_message(height_u, height_c), (20, 100))
+
     if heightU + card.hpM < maxheight:
         heightU += card.hpM
     elif card.hpM > 0:
@@ -81,7 +84,8 @@ def hp_damG(card):
         heightU = 0
         endGame = 1
         display_message(heightU, heightC)
-        #screen.blit(display_message(height_u, height_c), (20, 100))
+
+
 #заполнение при запуске игры
 def firstInit():
     ## init comp cart first
@@ -93,6 +97,7 @@ def firstInit():
     cartCom3 = WorkCards(cartScreen, cartClass, cf.cartPos3X)
     cartScreen, cartClass = fourCards(cf.cartPos4X, cf.cartPosCompY)
     cartCom4 = WorkCards(cartScreen, cartClass, cf.cartPos4X)
+
     workCardListComp = [cartCom1, cartCom2, cartCom3, cartCom4]
     ## init user cart first
     cartScreen, cartClass = fourCards(cf.cartPos1X, cf.cartPosUserY)
@@ -108,7 +113,9 @@ def firstInit():
 #генерация новой карты
 def newCart(listCart, posY,pos):
     for i in range(len(listCart)):
+
         if listCart[i].objScreenCart.collidepoint(pos):
+
             hp_damG(listCart[i].cart)
             posX = listCart[i].posX
             cartScreen, cartClass = fourCards(posX, posY)
@@ -122,11 +129,13 @@ class WorkCards:
         self.cart = cart
         self.posX = posX
 
+
 #главный циклы игры
 def mainloop():
  global  heightC, heightU
  global endGame
  workCardListComp, workCardListUser = firstInit()
+ step = 0 #  переключатель ходов между игроком и компом
  while True:
 
     screen.blit(background_image, (0, 100))
@@ -161,19 +170,29 @@ def mainloop():
         letter,wightText =display_message(heightU, heightC)
         screen.blit(letter, (surface_width/2 - wightText/2, 100))
     #pygame.display.flip()
+    if step == 1 and endGame == 0:  # ходит комп
+        step = 0
+        posChooseCart = chooseRightCart(workCardListComp, heightC,
+                                        heightU)  # передаем карты и состояние башен в logic.py файл
+
+        pos = (posChooseCart.posX, cf.cartPosCompY)
+        time.sleep(1)# для визуального замедления  хода компа
+        newCart(workCardListComp, cf.cartPosCompY, pos)  # и возвращаем  выбранную логикой карту
+
     for event in pygame.event.get():
           if event.type == pygame.QUIT:
             sys.exit()
 
+
           if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ## if mouse is pressed get position of cursor ##
             pos = pygame.mouse.get_pos()
-            if compRect.collidepoint(pos):
-              newCart(workCardListComp, cf.cartPosCompY, pos)
-            if userRect.collidepoint(pos):
+
+            if step == 0 and userRect.collidepoint(pos)and endGame == 0: #ходит игрок
+              step = 1
               newCart(workCardListUser, cf.cartPosUserY, pos)
 
-            if len(cards_deck) == 0:
+            if len(cards_deck) == 0:# проверка на пустую колоду
                 allEmpty = 0
                 for c in workCardListComp:
                     if c.cart == Empty:

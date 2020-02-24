@@ -21,7 +21,7 @@ class Card:
 empty_card = Card("Empty", 0, 0, 0, 0, 'images/empty.jpg')
 
 # hpM, damageM - мои  hpY, damageY - компа
-# CUBS
+# CLUBS
 CAce = Card("CAce", 0, 0, 0, -50, 'images/clubs/CAce.jpg')
 CKing = Card("CKing", 0, 0, 0, -34, 'images/clubs/CKing.jpg')
 CLady = Card("CLady", 0, 0, 0, -33, 'images/clubs/CLady.jpg')
@@ -83,10 +83,10 @@ D2 = Card("D2", 0, -5, 0, 0, 'images/diamonds/D2.jpg')
 
 
 cards_deck = [
-    CAce, CLady, CJack, C10, C9, C8, C7, C6, C5, C4, C3, C2,
-    SAce, SLady, SJack, S10, S9, S8, S7, S6, S5, S4, S3, S2,
-    HAce, HLady, HJack, H10, H9, H8, H7, H6, H5, H4, H3, H2,
-    DAce, DLady, DJack, D10, D9, D8, D7, D6, D5, D4, D3, D2
+     CAce, CLady, CJack, C10, C9, C8, C7, C6, C5, C4, C3, C2,
+     SAce, SLady, SJack, S10, S9, S8, S7, S6, S5, S4, S3, S2,
+     HAce, HLady, HJack, H10, H9, H8, H7, H6, H5, H4, H3, H2,
+     DAce, DLady, DJack, D10, D9, D8, D7, D6, D5, D4, D3, D2
 ]
 
 if __name__ == "__main__":
