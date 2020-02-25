@@ -44,7 +44,7 @@ def chooseRightCart( list, heightTowerComp,heightTowerUser):
             return crt
         if len(hearts) > 0:  # если не можем разрушить лечим башню игрока
             crt = hearts[0]
-            hearts.remove(crt)
+            hearts.clear()
             return crt
 
 
@@ -85,3 +85,23 @@ def sortSecond(cartClass):
         return cartClass.cart.hpY
     if cartClass.cart.damageY != 0:
         return cartClass.cart.damageY
+
+def getTower(height, user):
+    if user:
+        if height > 75:
+            return cf.towerU100
+        if  height > 50:
+            return cf.towerU75
+        if height > 25:
+            return cf.towerU50
+        else:
+            return cf.towerU25
+    else:
+        if height > 75:
+            return cf.towerC100
+        if  height > 50:
+            return cf.towerC75
+        if height > 25:
+            return cf.towerC50
+        else:
+            return cf.towerC25

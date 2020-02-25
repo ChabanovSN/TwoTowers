@@ -11,13 +11,16 @@ font_big_color = cf.font_big_color
 font = cf.font
 fontBig = cf.fontBig
 
-surface_width = cf.surface_width
+surface_width =  cf.surface_width
 surface_height = cf.surface_height
-
-surface_menu = cf.surface
+surface_menu = pygame.display.set_mode([cf.surface_widthCONST , cf.surface_heightCONST-200],  pygame.DOUBLEBUF)
 
 pygame.display.set_caption("Две Башни")
-background_image = cf.background_menu
+background_menu = cf.background_menu
+background_menu = pygame.transform.scale(background_menu, [cf.surface_widthCONST , cf.surface_heightCONST-200])
+
+
+
 
 start = option = ext = None
 
@@ -39,8 +42,10 @@ def midlText(text):
 
 if __name__ == "__main__":
     moveS = moveO = moveE = 0
+    width = height = 0
     while True:
-        surface_menu.blit(background_image, (0, 0))
+
+        surface_menu.blit(background_menu, (0, 0))
         if moveS == 0:
             start = DrawText('Старт', font, surface_menu, midlText('Старт'), (surface_height / 2) - 110, font_color)
         else:
@@ -58,13 +63,14 @@ if __name__ == "__main__":
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
+
             if event.type == pygame.QUIT:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if ext.collidepoint(pos):
                     sys.exit()
                 if start.collidepoint(pos):
-                    surface_menu.fill((55, 105, 0))
+                    surface_menu.fill(cf.green)
                     game.mainloop()
             if event.type == pygame.MOUSEMOTION:
                 if ext.collidepoint(pos):
