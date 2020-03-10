@@ -19,6 +19,7 @@ class Card:
 
 
 empty_card = Card("Empty", 0, 0, 0, 0, 'images/empty.jpg')
+back_card  = Card("Back", 0, 0, 0, 0, 'images/rubashka.jpg')
 
 # hpM, damageM - мои  hpY, damageY - компа
 # CLUBS

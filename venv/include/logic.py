@@ -92,7 +92,7 @@ def getTower(height, user):
             return cf.towerU100
         if  height > 50:
             return cf.towerU75
-        if height > 25:
+        if height > 10:
             return cf.towerU50
         else:
             return cf.towerU25
@@ -101,7 +101,7 @@ def getTower(height, user):
             return cf.towerC100
         if  height > 50:
             return cf.towerC75
-        if height > 25:
+        if height > 10:
             return cf.towerC50
         else:
             return cf.towerC25

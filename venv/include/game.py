@@ -11,25 +11,22 @@ import main
 pygame.init()
 surface_width = cf.surface_width
 surface_height = cf.surface_height
-screen = pygame.display.set_mode([cf.surface_widthCONST , cf.surface_heightCONST-200], pygame.RESIZABLE | pygame.DOUBLEBUF)
+screen = pygame.display.set_mode([cf.surface_widthCONST, cf.surface_heightCONST],  pygame.DOUBLEBUF)
 
 pygame.display.set_caption("Две башни")
 screen.fill(cf.green)
 
-background_game  = pygame.transform.scale(cf.background_game , [cf.surface_widthCONST , cf.surface_heightCONST-400])
-clock = pygame.time.Clock()
-clock.tick(60)
-
-
-
+background_game  = pygame.transform.scale(cf.background_game , [cf.surface_widthCONST , cf.surface_heightCONST-450])
+# clock = pygame.time.Clock()
+# clock.tick(60)
 
 
 Empty = cards.empty_card
-
+Back =cards.back_card
 maxheight = cf.maxheight
 
 ####
-towerY = 218
+towerY = 195
 textDemY = 190
 
 towerCompX = 20
@@ -41,7 +38,7 @@ textDemUserX = 700
 
 
 backGRX = 0
-backGRY = 100
+backGRY = 125
 ####
 endGame = 0
 
@@ -49,12 +46,51 @@ endGame = 0
 
 #отрисовка карты
 def fourCards(x , y,cards_deck):
+
     if len(cards_deck) == 0:
         return screen.blit(pygame.transform.scale(Empty.pyObj, (cf.sizeCardW, cf.sizeCarH)), (x, y)), Empty
     card = random.choice(cards_deck)
     if card in cards_deck:
         cards_deck.remove(card)
-        return screen.blit(pygame.transform.scale(card.pyObj, (cf.sizeCardW, cf.sizeCarH)), (x, y)), card
+        obj =screen.blit(pygame.transform.scale(card.pyObj, (cf.sizeCardW, cf.sizeCarH)), (x, y))
+        drawTextDamgEachCards(card,x,y)
+        pygame.display.flip()
+
+        return obj, card
+
+
+def drawTextDamgEachCards(cart,x,y):
+    moveY = y
+    if surface_height / 2 > y:
+        moveY += cf.sizeCarH+4
+    else:
+        x +=5
+        moveY -= cf.sizeCarH/3-2
+    text = 0
+    fnColor = None
+    if cart.hpM != 0:
+        fnColor = cf.red
+        text =str(cart.hpM)
+    elif cart.damageM != 0:
+        text = cart.damageM
+        fnColor = cf.red
+    elif cart.hpY != 0:
+        fnColor = cf.black
+        text = cart.hpY
+    else:
+        text = cart.damageY
+        fnColor = cf.black
+
+
+    pygame.draw.rect(screen, cf.green, (x, moveY,cf.sizeCardW,25))
+   # screen.blit(textobj, (x,  moveY))
+   #  pygame.display.update()
+    pygame.display.flip()
+    width, _ = cf.fontSmall.size(str(text))
+    textobj = cf.fontSmall.render(str(text), 0, fnColor)
+    #textrect = textobj.get_rect()
+    screen.blit(textobj, (x+width/3,  moveY))
+
 
 # сообщение о победе
 def display_message(user, comp):
@@ -151,6 +187,21 @@ def textDemage(hieght):
     time.sleep(0.2)  # для визуального замедления  хода компа
     return cf.fontSmall.render(str(demhieght), 0, cf.font_big_color)
 
+def drawMoveChooseCart(listCart,posY, pos):
+
+    moveY = posY
+    if surface_height/2 > posY:
+        moveY +=cf.sizeCarH + 35
+    else:
+        moveY -= cf.sizeCarH +30
+    for i in range(len(listCart)):
+        if listCart[i].objScreenCart.collidepoint(pos):
+         screen.blit(pygame.transform.scale(Back.pyObj, (cf.sizeCardW, cf.sizeCarH)), (listCart[i].posX, posY))
+         pygame.display.flip()
+
+         screen.blit(pygame.transform.scale(listCart[i].cart.pyObj, (cf.sizeCardW, cf.sizeCarH)), (listCart[i].posX, moveY))
+         pygame.display.flip()
+         time.sleep(0.5)
 
 
 #главный циклы игры
@@ -173,7 +224,7 @@ def mainloop():
     screen.blit(lg.getTower(heightU, 1),(towerUserX,towerY))
     screen.blit(textDemage(heightU), (textDemUserX, textDemY))
     # comp's cards
-    compRect = pygame.draw.rect(screen, (0, 0, 0), (300, 0, 225, 100), 3) # рамка для карт компа
+    pygame.draw.rect(screen, (0, 0, 0), (300, 0, 225, 100), 3) # рамка для карт компа
     # my cards
     userRect = pygame.draw.rect(screen, (255, 0, 0), (300, 500, 225, 100), 3) # рамка для карт игрока
     if endGame:
@@ -200,7 +251,10 @@ def mainloop():
         step = 0
         posChooseCart = lg.chooseRightCart(workCardListComp, heightC, heightU)  # передаем карты и состояние башен в logic.py файл
 
+
+
         pos = (posChooseCart.posX, cf.cartPosCompY)
+        drawMoveChooseCart(workCardListComp, cf.cartPosCompY, pos)
         time.sleep(0.5)# для визуального замедления  хода компа
         heightU, heightC = newCart(workCardListComp, cf.cartPosCompY, pos,heightU, heightC,cards_deck)  # и возвращаем  выбранную логикой карту
 
@@ -212,8 +266,9 @@ def mainloop():
             pos = pygame.mouse.get_pos()
             if step == 0 and userRect.collidepoint(pos) and endGame == 0: #ходит игрок
               step = 1
-              heightU, heightC = newCart(workCardListUser, cf.cartPosUserY, pos,heightU, heightC,cards_deck)
-
+              drawMoveChooseCart(workCardListUser, cf.cartPosUserY, pos)
+              time.sleep(0.5)
+              heightU, heightC = newCart(workCardListUser, cf.cartPosUserY, pos, heightU, heightC, cards_deck)
     if len(cards_deck) == 0:  # проверка на пустую колоду
         allEmpty = 0
         for c in workCardListComp:
