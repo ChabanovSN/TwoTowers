@@ -1,3 +1,5 @@
+import os
+
 import pygame
 import random
 
@@ -15,7 +17,8 @@ class Card:
         self.damageM = damageM
         self.hpY = hpY
         self.damageY = damageY
-        self.pyObj = pygame.image.load(path).convert()
+        self.pyObj = pygame.image.load(os.path.join(path)).convert()
+
 
 
 empty_card = Card("Empty", 0, 0, 0, 0, 'images/empty.jpg')
