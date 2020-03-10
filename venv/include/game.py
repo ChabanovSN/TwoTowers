@@ -5,7 +5,7 @@ import sys
 import config as cf
 import logic as lg
 import time
-import main
+import TwoTowers
 
 
 pygame.init()
@@ -230,8 +230,8 @@ def mainloop():
     if endGame:
         letter,wightText =display_message(heightU, heightC)
         screen.blit(letter, (surface_width/2 - wightText/2, 100))
-        start = main.DrawText('Рестарт', cf.font, screen, main.midlText('Рестарт'), (surface_height / 2) - 110, cf.font_color)
-        ext = main.DrawText('Выход', cf.font, screen, main.midlText('Выход'), (surface_height / 2), cf.font_color)
+        start = TwoTowers.DrawText('Рестарт', cf.font, screen, TwoTowers.midlText('Рестарт'), (surface_height / 2) - 110, cf.font_color)
+        ext = TwoTowers.DrawText('Выход', cf.font, screen, TwoTowers.midlText('Выход'), (surface_height / 2), cf.font_color)
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
