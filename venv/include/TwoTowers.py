@@ -49,9 +49,9 @@ if __name__ == "__main__":
 
         surface_menu.blit(background_menu, (0, 0))
         if moveS == 0:
-            start = DrawText(u'Старт', font, surface_menu, midlText(u'Старт',font), (surface_height / 2) - 110, font_color)
+            start = DrawText(u'Старт', font, surface_menu, midlText(u'Старт',font), (surface_height / 2) - 120, font_color)
         else:
-            start = DrawText(u'Старт', fontBig, surface_menu, midlText(u'Старт',fontBig), (surface_height / 2) - 140,
+            start = DrawText(u'Старт', fontBig, surface_menu, midlText(u'Старт',fontBig), (surface_height / 2) - 150,
                              font_big_color)
         if moveO == 0:
             option = DrawText(u'Опции', font, surface_menu, midlText(u'Опции', font), (surface_height / 2) - 40, font_color)
@@ -59,9 +59,9 @@ if __name__ == "__main__":
             option = DrawText(u'Опции', fontBig, surface_menu, midlText(u'Опции', fontBig), (surface_height / 2) - 40,
                               font_big_color)
         if moveE == 0:
-            ext = DrawText(u'Выход', font, surface_menu, midlText(u'Выход', font), (surface_height / 2) + 30, font_color)
+            ext = DrawText(u'Выход', font, surface_menu, midlText(u'Выход', font), (surface_height / 2) + 40, font_color)
         else:
-            ext = DrawText(u'Выход', fontBig, surface_menu, midlText(u'Выход', fontBig), (surface_height / 2) + 50, font_big_color)
+            ext = DrawText(u'Выход', fontBig, surface_menu, midlText(u'Выход', fontBig), (surface_height / 2) + 60, font_big_color)
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()

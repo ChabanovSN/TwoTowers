@@ -60,10 +60,11 @@ def newKoefHeight(window_height = surface_heightCONST):
 
 
 
-surface = pygame.display.set_mode([surface_width, surface_height], pygame.RESIZABLE | pygame.DOUBLEBUF)
+surface = pygame.display.set_mode([surface_width, surface_height],  pygame.DOUBLEBUF)
 
-
-
+mark_qu = pygame.image.load('images/qv.jpg').convert()
+mark_qu  = pygame.transform.scale(mark_qu , (50,50))
+mark_qu.set_colorkey(white)
 
 background_menu = pygame.image.load('images/menu_bk.jpg').convert()
 

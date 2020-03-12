@@ -5,17 +5,21 @@ import sys
 import config as cf
 import TwoTowers
 
+textTowerComp = u'Башня противника                                                                                 '
+textTowerUser = u'                                                                                       Ваша башня'
+
+
 level1Text1 = u'Для победы - уничтожьте башню противника, выбирая карты по очереди:'
 level1Text2 = u'Крести и  Пики - нанесут урон башне противника,'
 level1Text3 = u'Бубны и  Червы - восстановят собственную башню.'
-level1Text4 = u'Свойства карт ЗАВИСЯТ от выбранной колоды.'
+level1Text4 = u'Свойства карт ЗАВИСЯТ от обладателя карт.'
 
 level2Text1=  u'Для победы - уничтожьте башню противника, выбирая карты по очереди:'
 level2Text2=  u'Крести - наносят урон башне противника,'
 level2Text3=  u'Бубны - нанесут урон вашей башне,'
 level2Text4=  u'Пики - восстановят башню противника,'
 level2Text5=  u'Червы - восстановят вашу башню.'
-level2Text6 = u'Свойства карт НЕ ЗАВИСЯТ от выбранной колоды.'
+level2Text6 = u'Свойства карт НЕ ЗАВИСЯТ от обладателя карт.'
 
 pygame.font.init()
 
@@ -35,8 +39,51 @@ pygame.display.set_caption(u"Две башни")
 background_menu = cf.background_menu
 background_menu = pygame.transform.scale(background_menu, [cf.surface_widthCONST , cf.surface_heightCONST-200])
 
-
-
+def drowOnlineHelp(sreen):
+    TwoTowers.DrawText(str(u"Карты противника"), cf.fontTutorial, sreen,
+                       TwoTowers.midlText(str(u"Карты противника"), cf.fontTutorial),
+                       135, cf.black)
+    TwoTowers.DrawText(str(u"Ваши карты"), cf.fontTutorial, sreen,
+                       TwoTowers.midlText(str(u"Ваши карты"), cf.fontTutorial),
+                       cf.surface_heightCONST-370, cf.red)
+    TwoTowers.DrawText(str(textTowerComp), cf.fontTutorial, surface_menu,
+                       TwoTowers.midlText(textTowerComp, cf.fontTutorial),
+                       cf.surface_heightCONST-350, cf.black)
+    TwoTowers.DrawText(str(textTowerUser), cf.fontTutorial, surface_menu,
+                       TwoTowers.midlText(textTowerUser, cf.fontTutorial),
+                       cf.surface_heightCONST - 350, cf.red)
+    if cf.level1:
+        TwoTowers.DrawText(str(level1Text1), cf.fontTutorial, surface_menu,
+                           TwoTowers.midlText(level1Text1, cf.fontTutorial),
+                           (surface_height / 2) - 60, font_color)
+        TwoTowers.DrawText(str(level1Text2), cf.fontTutorial, sreen,
+                           TwoTowers.midlText(level1Text2, cf.fontTutorial),
+                           (surface_height / 2) - 30, cf.black)
+        TwoTowers.DrawText(str(level1Text3), cf.fontTutorial, sreen,
+                           TwoTowers.midlText(level1Text3, cf.fontTutorial),
+                           (surface_height / 2) , cf.red)
+        TwoTowers.DrawText(str(level1Text4), cf.fontTutorial, sreen,
+                           TwoTowers.midlText(level1Text4, cf.fontTutorial),
+                           (surface_height / 2) +30, font_color)
+    else:
+        TwoTowers.DrawText(str(level2Text1), cf.fontTutorial, surface_menu,
+                           TwoTowers.midlText(level2Text1, cf.fontTutorial),
+                           (surface_height / 2) - 60, font_color)
+        TwoTowers.DrawText(str(level2Text2), cf.fontTutorial, surface_menu,
+                           TwoTowers.midlText(level2Text2, cf.fontTutorial),
+                           (surface_height / 2) - 40, cf.black)
+        TwoTowers.DrawText(str(level2Text3), cf.fontTutorial, surface_menu,
+                           TwoTowers.midlText(level2Text3, cf.fontTutorial),
+                           (surface_height / 2) - 20, cf.red)
+        TwoTowers.DrawText(str(level2Text4), cf.fontTutorial, surface_menu,
+                           TwoTowers.midlText(level2Text4, cf.fontTutorial),
+                           (surface_height / 2), cf.black)
+        TwoTowers.DrawText(str(level2Text5), cf.fontTutorial, surface_menu,
+                           TwoTowers.midlText(level2Text5, cf.fontTutorial),
+                           (surface_height / 2) +20, cf.red)
+        TwoTowers.DrawText(str(level2Text6), cf.fontTutorial, surface_menu,
+                           TwoTowers.midlText(level2Text6, cf.fontTutorial),
+                           (surface_height / 2) +40, font_color)
 
 start = option = ext = None
 
@@ -49,7 +96,7 @@ def loopOption():
         surface_menu.blit(background_menu, (0, 0))
 
         if moveL1 == 0:
-            start1 = TwoTowers.DrawText(u'Уровень в 2 масти', font, surface_menu, TwoTowers.midlText(u'Уровень в 2 масти', font), (surface_height / 2) - 110, font_color)
+            start1 = TwoTowers.DrawText(u'Уровень в 2 масти', font, surface_menu, TwoTowers.midlText(u'Уровень в 2 масти', font), (surface_height / 2) - 130, font_color)
 
         else:
             start1 = TwoTowers.DrawText(u'Уровень в 2 масти', fontBig, surface_menu, TwoTowers.midlText(u'Уровень в 2 масти', fontBig), (surface_height / 2) - 140, font_big_color)
@@ -87,9 +134,9 @@ def loopOption():
 
 
         if moveE == 0:
-            ext = TwoTowers.DrawText(u'Выход', font, surface_menu, TwoTowers.midlText(u'Выход', font), (surface_height / 2) + 30, font_color)
+            ext = TwoTowers.DrawText(u'Выход', font, surface_menu, TwoTowers.midlText(u'Выход', font), (surface_height / 2) + 40, font_color)
         else:
-            ext = TwoTowers.DrawText(u'Выход', fontBig, surface_menu, TwoTowers.midlText(u'Выход', fontBig), (surface_height / 2) + 50, font_big_color)
+            ext = TwoTowers.DrawText(u'Выход', fontBig, surface_menu, TwoTowers.midlText(u'Выход', fontBig), (surface_height / 2) + 60, font_big_color)
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
