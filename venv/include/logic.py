@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import config as cf
 
 maxheight = cf.maxheight
@@ -13,38 +14,40 @@ def chooseRightCart( list, heightTowerComp,heightTowerUser):
     if heightTowerComp < maxheight/2: # если башня компа разрушенна на половину
         if len(spades) > 0: # лечим башну
             crt  = spades[0]
-            spades.clear()
+            del spades[:]
             return crt
         if len(diamonds) > 0: # если не можем лечить тогда разрушаем башню игрока
             crt = diamonds[0]
-            diamonds.clear()
+            del diamonds[:]
             return crt
 
         if len(clubs) >0:  # если не можем разрушить рушем башню компа
             crt = clubs[0]
-            clubs.clear()
+            del clubs[:]
             return crt
 
         if len(hearts) > 0:  # если не можем разрушить лечим башню игрока
             crt = hearts[0]
-            hearts.clear()
+            del hearts[:]
             return crt
     else: # если ХР башни компа больше 50%
         if len(diamonds) >0:  # разрушаем башню игрока
             crt = diamonds[0]
-            diamonds.clear()
+
+            del diamonds[:]
             return crt
         if len(clubs) >0:  # если не можем разрушить рушем башню компа
             crt = clubs[0]
-            clubs.clear()
+            del clubs[:]
+
             return crt
         if len(spades) > 0:  # лечим башну компа
             crt = spades[0]
-            spades.clear()
+            del spades[:]
             return crt
         if len(hearts) > 0:  # если не можем разрушить лечим башню игрока
             crt = hearts[0]
-            hearts.clear()
+            del hearts[:]
             return crt
 
 

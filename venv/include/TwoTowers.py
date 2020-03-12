@@ -3,6 +3,7 @@ import pygame
 import game
 import sys
 import config as cf
+import  Options
 
 pygame.font.init()
 
@@ -15,7 +16,7 @@ surface_width =  cf.surface_width
 surface_height = cf.surface_height
 surface_menu = pygame.display.set_mode([cf.surface_widthCONST , cf.surface_heightCONST-200],  pygame.DOUBLEBUF)
 
-pygame.display.set_caption("Две Башни")
+pygame.display.set_caption(u"Две башни")
 background_menu = cf.background_menu
 background_menu = pygame.transform.scale(background_menu, [cf.surface_widthCONST , cf.surface_heightCONST-200])
 
@@ -32,34 +33,35 @@ def DrawText(text, font, surface_menu, x, y, fnColor):
     return surface_menu.blit(textobj, textrect)
 
 
-width, _ = font.size('Старт')
 
 
-def midlText(text):
-    width, _ = font.size(text)
+
+def midlText(text,fontS):
+    width, _ = fontS.size(text)
     return (surface_width / 2 - width / 2)
 
 
 if __name__ == "__main__":
     moveS = moveO = moveE = 0
     width = height = 0
-    while True:
+    running = 1
+    while running:
 
         surface_menu.blit(background_menu, (0, 0))
         if moveS == 0:
-            start = DrawText('Старт', font, surface_menu, midlText('Старт'), (surface_height / 2) - 110, font_color)
+            start = DrawText(u'Старт', font, surface_menu, midlText(u'Старт',font), (surface_height / 2) - 110, font_color)
         else:
-            start = DrawText('Старт', fontBig, surface_menu, midlText('Старт'), (surface_height / 2) - 140,
+            start = DrawText(u'Старт', fontBig, surface_menu, midlText(u'Старт',fontBig), (surface_height / 2) - 140,
                              font_big_color)
         if moveO == 0:
-            option = DrawText('Опции', font, surface_menu, midlText('Опции'), (surface_height / 2) - 40, font_color)
+            option = DrawText(u'Опции', font, surface_menu, midlText(u'Опции', font), (surface_height / 2) - 40, font_color)
         else:
-            option = DrawText('Опции', fontBig, surface_menu, midlText('Опции'), (surface_height / 2) - 40,
+            option = DrawText(u'Опции', fontBig, surface_menu, midlText(u'Опции', fontBig), (surface_height / 2) - 40,
                               font_big_color)
         if moveE == 0:
-            ext = DrawText('Выход', font, surface_menu, midlText('Выход'), (surface_height / 2) + 30, font_color)
+            ext = DrawText(u'Выход', font, surface_menu, midlText(u'Выход', font), (surface_height / 2) + 30, font_color)
         else:
-            ext = DrawText('Выход', fontBig, surface_menu, midlText('Выход'), (surface_height / 2) + 50, font_big_color)
+            ext = DrawText(u'Выход', fontBig, surface_menu, midlText(u'Выход', fontBig), (surface_height / 2) + 50, font_big_color)
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
@@ -71,7 +73,12 @@ if __name__ == "__main__":
                     sys.exit()
                 if start.collidepoint(pos):
                     surface_menu.fill(cf.green)
+                    running = 0
                     game.mainloop()
+                if option.collidepoint(pos):
+                    surface_menu.fill(cf.green)
+                    running = 0
+                    Options.loopOption()
             if event.type == pygame.MOUSEMOTION:
                 if ext.collidepoint(pos):
                     moveE = 1

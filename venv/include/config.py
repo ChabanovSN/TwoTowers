@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
 import pygame
 
+
 pygame.init()
+
+level1 = 1
+level2 = 0
 # size of main screen
 surface_width = 800
 surface_height = 600
@@ -30,8 +35,9 @@ heightU = 150
 font = pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 72)
 fontBig = pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 85)
 fontSmall= pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 25)
+fontTutorial= pygame.font.Font('fonts/GUERRILLA-Normal.ttf', 22)
 font_color = (255, 255, 153)
-font_big_color = (153, 102, 255)
+font_big_color = (190, 190, 255)
 
 white = (255,255,255)
 black = (0, 0, 0)
@@ -61,7 +67,6 @@ surface = pygame.display.set_mode([surface_width, surface_height], pygame.RESIZA
 
 background_menu = pygame.image.load('images/menu_bk.jpg').convert()
 
-
 towerC100=pygame.image.load('images/towers/tower100C.png').convert()
 towerC100  = pygame.transform.scale(towerC100 , (100,heightC+heightC-20))
 towerC100.set_colorkey(white)
@@ -75,7 +80,7 @@ towerC25=pygame.image.load('images/towers/tower25C.png').convert()
 towerC25  = pygame.transform.scale(towerC25 , (100,heightC+heightC-20))
 towerC25.set_colorkey(white)
 
-
+#towerU100=pygame.image.load('images/towers/tower100U.jpg').convert()
 towerU100=pygame.image.load('images/towers/tower100U.png').convert()
 towerU100  = pygame.transform.scale(towerU100 , (100,heightC+heightC-20))
 towerU100.set_colorkey(white)

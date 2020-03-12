@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pygame
 import cards
 import random
@@ -13,7 +14,7 @@ surface_width = cf.surface_width
 surface_height = cf.surface_height
 screen = pygame.display.set_mode([cf.surface_widthCONST, cf.surface_heightCONST],  pygame.DOUBLEBUF)
 
-pygame.display.set_caption("Две башни")
+pygame.display.set_caption(u"Две башни")
 screen.fill(cf.green)
 
 background_game  = pygame.transform.scale(cf.background_game , [cf.surface_widthCONST , cf.surface_heightCONST-450])
@@ -27,7 +28,7 @@ maxheight = cf.maxheight
 
 ####
 towerY = 195
-textDemY = 190
+textDemY = 175
 
 towerCompX = 20
 textDemCompX = 30
@@ -96,14 +97,14 @@ def drawTextDamgEachCards(cart,x,y):
 def display_message(user, comp):
 
     if user > comp:
-       width, _ = cf.font.size("Вы победили!!!")
-       return  cf.font.render("Вы победили!!!", 0, cf.black),width
+       width, _ = cf.font.size(u"Вы победили!!!")
+       return  cf.font.render(u"Вы победили!!!", 0, cf.black),width
     elif user < comp:
-       width, _ = cf.font.size("Противник победил!!!")
-       return  cf.font.render("Противник победил!!!", 0, cf.black),width
+       width, _ = cf.font.size(u"Противник победил!!!")
+       return  cf.font.render(u"Противник победил!!!", 0, cf.black),width
     else:
-        width, _ = cf.font.size("Ничья!!!")
-        return cf.font.render("Ничья!!!", 0, cf.black),width
+        width, _ = cf.font.size(u"Ничья!!!")
+        return cf.font.render(u"Ничья!!!", 0, cf.black),width
 
 
 # урон и ХП
@@ -230,8 +231,8 @@ def mainloop():
     if endGame:
         letter,wightText =display_message(heightU, heightC)
         screen.blit(letter, (surface_width/2 - wightText/2, 100))
-        start = TwoTowers.DrawText('Рестарт', cf.font, screen, TwoTowers.midlText('Рестарт'), (surface_height / 2) - 110, cf.font_color)
-        ext = TwoTowers.DrawText('Выход', cf.font, screen, TwoTowers.midlText('Выход'), (surface_height / 2), cf.font_color)
+        start = TwoTowers.DrawText(u'Рестарт', cf.font, screen, TwoTowers.midlText(u'Рестарт', cf.font), (surface_height / 2) - 110, cf.font_color)
+        ext = TwoTowers.DrawText(u'Выход', cf.font, screen, TwoTowers.midlText(u'Выход', cf.font), (surface_height / 2), cf.font_color)
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
